@@ -1,8 +1,12 @@
+from django.conf.urls import include
 from django.urls import path
+from rest_framework import routers
 
-from games_info.api.views import game_api
+from games_info.api.api.viewsets import GameViewSet
 
+router = routers.DefaultRouter()
+router.register('', GameViewSet)
 
 urlpatterns = [
-    path('', game_api, name='game_api'),
+    path('', include(router.urls)),
 ]
