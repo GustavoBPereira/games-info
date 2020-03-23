@@ -6,14 +6,12 @@ from games_info.api.api.serializers import GameSerializer
 from games_info.api.models import Game
 from games_info.crawler.main import GameCrawler
 
-from django.http import JsonResponse
-
 
 class GameViewSet(viewsets.ModelViewSet):
     queryset = Game.objects.all()
     serializer_class = GameSerializer
 
-    def create(self, request, *args, **kwargs):
+    def create(self, request):
         searched_game = request.POST.get('searched_game', None)
 
         if searched_game is None or searched_game == '':
