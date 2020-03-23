@@ -18,7 +18,7 @@ class GameCrawler:
         real_name = soup.find('h1').text
         prices = soup.find('td', {'data-cc': 'br'})
         current_price = prices.next_sibling.next_sibling.text
-        best_price = prices.next_sibling.next_sibling.next_sibling.next_sibling.text
+        best_price = prices.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.text
         return {'real_name': real_name, 'current_price': current_price, 'best_price': best_price}
 
     def close(self):
