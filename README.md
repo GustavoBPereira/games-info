@@ -9,20 +9,19 @@ Basically make a post to /games-info/ with this parameters:
 
 ```
 {
-    'game_name': 'your_game_name'
+    'searched_game': 'the witcher 3'
 }
 ```
 
 The return will be a json with informations about this game:
 ```
 {
-    "pk": 1,
-    "game_name": "The Witcher 3: Wild Hunt",
-    "current_price": "R$ 79,99",
-    "best_price": "R$ 23,99",
-    "created_at": "2020-03-14T19:38:14.873178Z",
-    "updated_at": "2020-03-14T22:42:45.296568Z",
-    "searched_game_name": "the witcher 3"
+    'created_at': '2020-03-24T01:22:36.759145Z',
+    'updated_at': '2020-03-24T01:22:36.759204Z',
+    'searched_game': 'the witcher 3',
+    'game_name': 'The Witcher 3: Wild Hunt',
+    'best_price': 'R$ 23,99',
+    'current_price': 'R$ 23,99 at -70%'
 }
 ```
 
