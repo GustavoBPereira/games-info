@@ -1,5 +1,3 @@
-from time import sleep
-
 from selenium import webdriver
 from bs4 import BeautifulSoup
 
