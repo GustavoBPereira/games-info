@@ -26,6 +26,7 @@ class GameViewSet(viewsets.ModelViewSet):
         best_price = game_data_steamdb['best_price']
 
         try:
+            status_code = status.HTTP_200_OK
             game = Game.objects.get(game_name=game_name)
             game.searched_game = searched_game
             game.game_name = game_name
@@ -33,7 +34,8 @@ class GameViewSet(viewsets.ModelViewSet):
             game.best_price = best_price
             game.save()
         except Game.DoesNotExist:
+            status_code = status.HTTP_201_CREATED
             game = Game.objects.create(searched_game=searched_game, game_name=game_name,
                                        current_price=current_price, best_price=best_price)
         serializer = GameSerializer(game)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.data, status=status_code)

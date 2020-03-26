@@ -7,6 +7,7 @@ class GameSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Game
         fields = (
+            'pk',
             'created_at',
             'updated_at',
             'searched_game',
