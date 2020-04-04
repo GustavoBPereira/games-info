@@ -18,12 +18,11 @@ class GameViewSet(viewsets.ModelViewSet):
             raise ValidationError(detail='Parameter searched_game not found or empty')
 
         crawler = GameCrawler(searched_game)
-        game_data_steamdb = crawler.get_data_from_steamdb()
-        crawler.close()
+        game_datas = crawler.get_data()
 
-        game_name = game_data_steamdb['real_name']
-        current_price = game_data_steamdb['current_price']
-        best_price = game_data_steamdb['best_price']
+        game_name = game_datas['steamdb']['real_name']
+        current_price = game_datas['steamdb']['current_price']
+        best_price = game_datas['steamdb']['best_price']
 
         try:
             status_code = status.HTTP_200_OK
