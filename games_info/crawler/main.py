@@ -19,5 +19,29 @@ class GameCrawler:
         best_price = prices.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.text
         return {'real_name': real_name, 'current_price': current_price, 'best_price': best_price}
 
+    def get_data_from_how_long(self, real_game_name):
+
+        self.driver.get("https://howlongtobeat.com/")
+
+        elem = self.driver.find_element_by_name("global_search_box")
+        elem.clear()
+        elem.send_keys(real_game_name)
+        from time import sleep
+        sleep(5)
+        soup = BeautifulSoup(self.driver.page_source, 'html.parser')
+
+        how_long_data = soup.find('div', {'class': 'search_list_details_block'})
+
+        titles = [title.text for title in how_long_data.find_all('div', {'class': 'shadow_text'})]
+        hours = [hour.text for hour in how_long_data.find_all('div', {'class': 'time_100'})]
+
+        time_data = {}
+        for title in titles:
+            for hour in hours:
+                time_data[title] = hour
+                hours.remove(hour)
+                break
+        return time_data
+
     def close(self):
         self.driver.quit()
