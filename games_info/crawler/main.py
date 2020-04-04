@@ -43,7 +43,11 @@ class GameCrawler:
         time_data = {}
         for title in titles:
             for hour in hours:
-                time_data[title] = hour
+                cleaned_hour = hour.strip()
+                if '½' in cleaned_hour:
+                    cleaned_hour = hour.replace('½', '')
+                    cleaned_hour += ' 30 Mins'
+                time_data[title] = cleaned_hour
                 hours.remove(hour)
                 break
         return time_data
@@ -61,3 +65,9 @@ class GameCrawler:
 
     def close(self):
         self.driver.quit()
+
+
+if __name__ == '__main__':
+    hell = GameCrawler('Hellblade')
+    data = hell.get_data()
+    from ipdb import set_trace; set_trace()
