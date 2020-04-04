@@ -65,9 +65,3 @@ class GameCrawler:
 
     def close(self):
         self.driver.quit()
-
-
-if __name__ == '__main__':
-    hell = GameCrawler('Hellblade')
-    data = hell.get_data()
-    from ipdb import set_trace; set_trace()
