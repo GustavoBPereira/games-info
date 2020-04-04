@@ -43,5 +43,16 @@ class GameCrawler:
                 break
         return time_data
 
+    def get_data(self):
+        data = {}
+        stemdb_datas = self.get_data_from_steamdb()
+        how_long_datas = self.get_data_from_how_long(stemdb_datas['real_name'])
+
+        self.close()
+        
+        data['steamdb'] = stemdb_datas
+        data['how_long'] = how_long_datas
+        return data
+
     def close(self):
         self.driver.quit()
