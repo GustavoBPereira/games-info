@@ -1,6 +1,10 @@
 from selenium import webdriver
 from bs4 import BeautifulSoup
 
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
 
 class GameCrawler:
     def __init__(self, game_name):
@@ -22,12 +26,13 @@ class GameCrawler:
     def get_data_from_how_long(self, real_game_name):
 
         self.driver.get("https://howlongtobeat.com/")
-
         elem = self.driver.find_element_by_name("global_search_box")
         elem.clear()
         elem.send_keys(real_game_name)
-        from time import sleep
-        sleep(5)
+
+        wait = WebDriverWait(self.driver, 10)
+        wait.until(EC.visibility_of_element_located((By.CLASS_NAME, 'search_list_details_block')))
+
         soup = BeautifulSoup(self.driver.page_source, 'html.parser')
 
         how_long_data = soup.find('div', {'class': 'search_list_details_block'})
@@ -49,7 +54,7 @@ class GameCrawler:
         how_long_datas = self.get_data_from_how_long(stemdb_datas['real_name'])
 
         self.close()
-        
+
         data['steamdb'] = stemdb_datas
         data['how_long'] = how_long_datas
         return data
