@@ -46,7 +46,7 @@ class GameCrawler:
                 cleaned_hour = hour.strip()
                 if '½' in cleaned_hour:
                     cleaned_hour = hour.replace('½', '')
-                    cleaned_hour += ' 30 Mins'
+                    cleaned_hour += '30 Mins'
                 time_data.append([title, cleaned_hour])
                 hours.remove(hour)
                 break
