@@ -40,14 +40,14 @@ class GameCrawler:
         titles = [title.text for title in how_long_data.find_all('div', {'class': 'shadow_text'})]
         hours = [hour.text for hour in how_long_data.find_all('div', {'class': 'time_100'})]
 
-        time_data = {}
+        time_data = []
         for title in titles:
             for hour in hours:
                 cleaned_hour = hour.strip()
                 if '½' in cleaned_hour:
                     cleaned_hour = hour.replace('½', '')
                     cleaned_hour += ' 30 Mins'
-                time_data[title] = cleaned_hour
+                time_data.append([title, cleaned_hour])
                 hours.remove(hour)
                 break
         return time_data
