@@ -31,10 +31,16 @@ class GameViewSet(viewsets.ModelViewSet):
             game.game_name = game_name
             game.current_price = current_price
             game.best_price = best_price
+            if not game.time_information.exists():
+                for time_data in game_datas['how_long']:
+                    game.time_information.create(description=time_data[0], content=time_data[1])
             game.save()
         except Game.DoesNotExist:
             status_code = status.HTTP_201_CREATED
             game = Game.objects.create(searched_game=searched_game, game_name=game_name,
                                        current_price=current_price, best_price=best_price)
+            for time_data in game_datas['how_long']:
+                game.time_information.create(description=time_data[0], content=time_data[1])
+
         serializer = GameSerializer(game)
         return Response(serializer.data, status=status_code)
