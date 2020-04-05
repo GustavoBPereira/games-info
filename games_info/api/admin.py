@@ -1,3 +1,6 @@
 from django.contrib import admin
 
-# Register your models here.
+from games_info.api.models import TimeData, Game
+
+admin.site.register(TimeData)
+admin.site.register(Game)
