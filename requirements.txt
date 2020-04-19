@@ -12,3 +12,5 @@ soupsieve==2.0
 sqlparse==0.3.1
 static3==0.7.0
 urllib3==1.25.8
+gunicorn
+psycopg2
