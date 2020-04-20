@@ -19,7 +19,7 @@ class GameCrawler:
             chrome_options.add_argument('--no-sandbox')
             chrome_options.binary_location = GOOGLE_CHROME_PATH
 
-            self.driver = webdriver.Chrome(execution_path=CHROMEDRIVER_PATH, chrome_options=chrome_options)
+            self.driver = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH, chrome_options=chrome_options)
         else:
             self.driver = webdriver.Chrome()
 
