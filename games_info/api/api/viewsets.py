@@ -13,6 +13,7 @@ class GameViewSet(viewsets.ModelViewSet):
 
     def create(self, request):
         searched_game = request.POST.get('searched_game', None)
+        not_commit = request.POST.get('commit') in ['False', 'false', '0']
 
         if searched_game is None or searched_game == '':
             raise ValidationError(detail='Parameter searched_game not found or empty')
@@ -24,23 +25,28 @@ class GameViewSet(viewsets.ModelViewSet):
         current_price = game_datas['steamdb']['current_price']
         best_price = game_datas['steamdb']['best_price']
 
-        try:
-            status_code = status.HTTP_200_OK
-            game = Game.objects.get(game_name=game_name)
-            game.searched_game = searched_game
-            game.game_name = game_name
-            game.current_price = current_price
-            game.best_price = best_price
-            if not game.time_information.exists():
+        status_code = status.HTTP_200_OK
+
+        if not_commit:
+            game = Game(searched_game=searched_game, game_name=game_name,
+                                       current_price=current_price, best_price=best_price, id=42424242)
+        else:
+            try:
+                game = Game.objects.get(game_name=game_name)
+                game.searched_game = searched_game
+                game.game_name = game_name
+                game.current_price = current_price
+                game.best_price = best_price
+                if not game.time_information.exists():
+                    for time_data in game_datas['how_long']:
+                        game.time_information.create(description=time_data[0], content=time_data[1])
+                game.save()
+            except Game.DoesNotExist:
+                status_code = status.HTTP_201_CREATED
+                game = Game.objects.create(searched_game=searched_game, game_name=game_name,
+                                           current_price=current_price, best_price=best_price)
                 for time_data in game_datas['how_long']:
                     game.time_information.create(description=time_data[0], content=time_data[1])
-            game.save()
-        except Game.DoesNotExist:
-            status_code = status.HTTP_201_CREATED
-            game = Game.objects.create(searched_game=searched_game, game_name=game_name,
-                                       current_price=current_price, best_price=best_price)
-            for time_data in game_datas['how_long']:
-                game.time_information.create(description=time_data[0], content=time_data[1])
 
         serializer = GameSerializer(game)
         return Response(serializer.data, status=status_code)
