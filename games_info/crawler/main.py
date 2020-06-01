@@ -9,20 +9,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 class GameCrawler:
     def __init__(self, game_name):
-        IS_HEROKU_INSTANCE = config('IS_HEROKU_INSTANCE', default=False, cast=bool)
-        if IS_HEROKU_INSTANCE:
-            GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google_chrome'
-            CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
-
-            chrome_options = webdriver.ChromeOptions()
-            chrome_options.add_argument('--disable-gpu')
-            chrome_options.add_argument('--no-sandbox')
-            chrome_options.binary_location = GOOGLE_CHROME_PATH
-
-            self.driver = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH, chrome_options=chrome_options)
-        else:
-            self.driver = webdriver.Chrome()
-
+        self.driver = webdriver.Chrome()
         self.game_name = game_name
 
     def get_data_from_steamdb(self):
