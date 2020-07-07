@@ -6,3 +6,4 @@ __pycache__
 staticfiles
 .idea
 ghostdriver.log
+migrations/
