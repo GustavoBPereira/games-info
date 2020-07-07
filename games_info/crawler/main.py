@@ -27,7 +27,8 @@ class GameCrawler:
     def get_data_from_how_long(self, real_game_name):
 
         self.driver.get("https://howlongtobeat.com/")
-        elem = self.driver.find_element_by_name("global_search_box")
+        elem = self.driver.find_element_by_class_name("global_search_box")
+        elem.click()
         elem.clear()
         elem.send_keys(real_game_name)
 
