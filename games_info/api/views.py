@@ -30,13 +30,15 @@ class GameInfo(View):
                 for time_data in game_datas['how_long']:
                     game.time_information.create(description=time_data[0], content=time_data[1])
             game.save()
+            status_code = 200
         except Game.DoesNotExist:
+            status_code = 201
             game = Game.objects.create(searched_game=searched_game, game_name=game_name,
                                        current_price=current_price, best_price=best_price)
             for time_data in game_datas['how_long']:
                 game.time_information.create(description=time_data[0], content=time_data[1])
 
-        return JsonResponse(game.as_dict(), safe=False)
+        return JsonResponse(game.as_dict(), safe=False, status=status_code)
 
     def get(self, *args, **kwargs):
         registered_games = Game.objects.all()
