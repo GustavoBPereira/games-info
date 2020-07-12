@@ -14,7 +14,9 @@ class GameCrawler:
 
     def get_data_from_steamdb(self):
         self.driver.get(f"https://steamdb.info/instantsearch/?query={self.game_name.replace(' ', '+')}")
-        self.driver.implicitly_wait(2)
+        wait = WebDriverWait(self.driver, 10)
+        wait.until(EC.visibility_of_element_located((By.CLASS_NAME, 's-hit')))
+        
         self.driver.find_element_by_class_name('s-hit').click()
 
         soup = BeautifulSoup(self.driver.page_source, 'html.parser')
