@@ -18,7 +18,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'games_info.api',
-    'games_info.games_viewer'
+    'games_info.front_end'
 ]
 
 MIDDLEWARE = [
