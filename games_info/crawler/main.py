@@ -9,6 +9,11 @@ from selenium.webdriver.support import expected_conditions as EC
 
 class GameCrawler:
     def __init__(self, game_name):
+        if config('IS_AWS_INSTANCE', default=False, cast=bool):
+            from pyvirtualdisplay import Display
+            display = Display(visible=0, size=(800, 800))
+            display.start()
+
         self.driver = webdriver.Chrome()
         self.game_name = game_name
 
