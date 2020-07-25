@@ -8,12 +8,17 @@ from selenium.webdriver.support import expected_conditions as EC
 
 
 class GameCrawler:
-    def __init__(self, game_name):
+    accepted_currency = ['us', 'eu', 'ar', 'au', 'br', 'uk', 'ca', 'cl', 'cn', 'az', 'co', 'cr', 'hk', 'in', 'id', 'il',
+                        'jp', 'kz', 'kw', 'my', 'mx', 'nz', 'no', 'pe', 'ph', 'pl', 'qa', 'ru', 'sa', 'sg', 'za', 'pk',
+                        'kr', 'ch', 'tw', 'th', 'tr', 'ae', 'ua', 'uy', 'vn', ]
+
+    def __init__(self, game_name, currency='us'):
         if config('IS_AWS_INSTANCE', default=False, cast=bool):
             from pyvirtualdisplay import Display
             display = Display(visible=0, size=(800, 800))
             display.start()
 
+        self.currency = currency if currency in self.accepted_currency else 'us'
         self.driver = webdriver.Chrome()
         self.game_name = game_name
 
@@ -24,9 +29,13 @@ class GameCrawler:
 
         self.driver.find_element_by_class_name('s-hit').click()
 
+        self.driver.find_element_by_id('js-currency-selector').click()
+        currency = f'//*[@id="prices"]/div[2]/a[@data-cc="{self.currency}"]'
+        self.driver.find_element_by_xpath(currency).click()
+
         soup = BeautifulSoup(self.driver.page_source, 'html.parser')
         real_name = soup.find('h1').text
-        prices = soup.find('td', {'data-cc': 'br'})
+        prices = soup.find('td', {'data-cc': self.currency})
         current_price = prices.next_sibling.next_sibling.text
         best_price = prices.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.text
         return {'real_name': real_name, 'current_price': current_price, 'best_price': best_price}

@@ -12,9 +12,22 @@ Basically make a post to /games-info/ with this parameters:
 ```
 {
     'searched_game': 'the witcher 3',
-
+    // optinal parameter
+    'currency': 'us'
+    // see below about currency parameter
 }
 ```
+Currency parameter: 
+```
+[
+    'us', 'eu', 'ar', 'au', 'br', 'uk', 'ca', 'cl', 'cn', 'az', 'co', 'cr',
+    'hk', 'in', 'id', 'il', 'jp', 'kz', 'kw', 'my', 'mx', 'nz', 'no', 'pe',
+    'ph', 'pl', 'qa', 'ru', 'sa', 'sg', 'za', 'pk', 'kr', 'ch', 'tw', 'th',
+    'tr', 'ae', 'ua', 'uy', 'vn'
+]
+// if passed an incorrect currency, the currency will be us
+```
+
 
 The return will be a json with informations about this game:
 ```

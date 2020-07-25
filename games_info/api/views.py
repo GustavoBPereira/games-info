@@ -10,10 +10,11 @@ class GameInfo(View):
 
     def post(self, *args, **kwargs):
         searched_game = self.request.POST.get('searched_game', None)
+        currency = self.request.POST.get('currency', 'us')
         if searched_game is None or searched_game == '':
             raise ValidationError(message='Parameter searched_game not found or empty')
 
-        crawler = GameCrawler(searched_game)
+        crawler = GameCrawler(searched_game, currency)
         game_datas = crawler.get_data()
 
         game_name = game_datas['steamdb']['real_name']
