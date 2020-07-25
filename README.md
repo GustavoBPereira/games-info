@@ -13,9 +13,6 @@ Basically make a post to /games-info/ with this parameters:
 {
     'searched_game': 'the witcher 3',
 
-    'commit': 'false',
-    // commit is optional, if false, False or 0
-    // the api will do not use or save the Database
 }
 ```
 
