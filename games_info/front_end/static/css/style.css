@@ -23,7 +23,15 @@ h1 {
 
 input#search-input{
     color: #50fa7b;
+}
+
+input#search-input, select#currency-input{
     background-color: #44475a;
     border-color: #bd93f9;
     font-weight: bold;
+}
+
+select#currency-input {
+    color: #8be9fd;
+    max-width: 22%;
 }

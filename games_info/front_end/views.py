@@ -20,7 +20,8 @@ class Index(View):
     def post(self, *args, **kwargs):
         form = SearchGameForm(self.request.POST)
         game = form['game_search'].value()
+        currency = form['currency'].value()
         current_site = SimpleLazyObject(lambda: get_current_site(self.request))
         url = 'http://' + str(current_site) + reverse('api')
-        game_data = requests.post(url=url, data={'searched_game': game})
+        game_data = requests.post(url=url, data={'searched_game': game, 'currency': currency})
         return JsonResponse(game_data.json())
