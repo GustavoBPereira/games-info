@@ -21,7 +21,7 @@ h1 {
     margin-top: 1%;
 }
 
-input#search-input{
+input#search-input, p{
     color: #50fa7b;
 }
 
@@ -34,4 +34,21 @@ input#search-input, select#currency-input{
 select#currency-input {
     color: #8be9fd;
     max-width: 22%;
+}
+
+#table-game-detail {
+    border-bottom: 2px solid #ff79c6;
+    border-top: 2px solid #ff79c6;
+}
+
+#table-game-detail>p {
+    text-align: center;
+}
+
+span.desc-field {
+    color: #bd93f9;
+}
+
+span.value-field {
+    color: #50fa7b;
 }

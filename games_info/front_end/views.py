@@ -4,7 +4,6 @@ from django.urls import reverse
 import requests
 
 from games_info.front_end.forms import SearchGameForm
-from django.http import JsonResponse
 
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.functional import SimpleLazyObject
@@ -24,4 +23,4 @@ class Index(View):
         current_site = SimpleLazyObject(lambda: get_current_site(self.request))
         url = 'http://' + str(current_site) + reverse('api')
         game_data = requests.post(url=url, data={'searched_game': game, 'currency': currency})
-        return JsonResponse(game_data.json())
+        return render(self.request, 'game_detail.html', {'game': game_data.json()})
