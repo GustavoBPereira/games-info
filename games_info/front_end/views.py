@@ -23,4 +23,4 @@ class Index(View):
         current_site = SimpleLazyObject(lambda: get_current_site(self.request))
         url = 'http://' + str(current_site) + reverse('api')
         game_data = requests.post(url=url, data={'searched_game': game, 'currency': currency})
-        return render(self.request, 'game_detail.html', {'game': game_data.json()})
+        return render(self.request, 'index.html', {'game': game_data.json(), 'form': form})

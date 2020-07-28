@@ -52,3 +52,7 @@ span.desc-field {
 span.value-field {
     color: #50fa7b;
 }
+
+span.hint {
+    font-style: italic;
+}

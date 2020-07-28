@@ -19,4 +19,32 @@
             <button class="btn btn-primary" id="search-btn" type="submit">Search</button>
         </form>
     </div>
+
+    {% if game and 'error' not in game %}
+        <div class="container" id="table-game-detail">
+            <p><span class="desc-field">Search result for game: </span><span class="value-field">{{ game.searched_game }}</span></p>
+            <p><span class="desc-field">Game Found: </span><span class="value-field">{{ game.game_name }}</span></p>
+            <p><span class="desc-field">Current Price on Steam:</span> <span class="value-field">{{ game.current_price }}</span></p>
+            <p><span class="desc-field">Best Price on Steam:</span> <span class="value-field">{{ game.best_price }}</span></p>
+            {% if game.time_information %}
+                {% for time in game.time_information %}
+                    <p><span class="desc-field">{{ time.description }}:</span> <span class="value-field">{{ time.content }}</span></p>
+                {% endfor %}
+            {% endif %}
+    </div>
+    {% elif game and 'error' in game %}
+        <div class="container" id="table-game-detail">
+            <p>
+                <span class="desc-field">The search: </span>
+                <span class="value-field">{{ game.searched_game }}</span>
+                <span class="desc-field"> is invalid</span>
+            </p>
+            <p>
+                <span class="desc-field hint">
+                    Try to search a priced game
+                </span>
+            </p>
+        </div>
+    {% endif %}
+
 {% endblock %}
