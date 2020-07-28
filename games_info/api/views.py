@@ -19,7 +19,7 @@ class GameInfo(View):
         try:
             game_datas = crawler.get_data()
         except NoSuchElementException:
-            return JsonResponse({'error': 'Invalid Game'}, status=400)
+            return JsonResponse({'error': 'Invalid Game', 'searched_game': searched_game}, status=400)
 
         game_name = game_datas['steamdb']['real_name']
         current_price = game_datas['steamdb']['current_price']
