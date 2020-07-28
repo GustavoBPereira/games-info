@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-
+from selenium.common.exceptions import NoSuchElementException
 
 class GameCrawler:
     accepted_currency = ['us', 'eu', 'ar', 'au', 'br', 'uk', 'ca', 'cl', 'cn', 'az', 'co', 'cr', 'hk', 'in', 'id', 'il',
@@ -29,7 +29,12 @@ class GameCrawler:
 
         self.driver.find_element_by_class_name('s-hit').click()
 
-        self.driver.find_element_by_id('js-currency-selector').click()
+        try:
+            self.driver.find_element_by_id('js-currency-selector').click()
+        except NoSuchElementException as e:
+            self.close()
+            raise e
+
         currency = f'//*[@id="prices"]/div[2]/a[@data-cc="{self.currency}"]'
         self.driver.find_element_by_xpath(currency).click()
 

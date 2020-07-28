@@ -1,6 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse
 from django.views.generic.base import View
+from selenium.common.exceptions import NoSuchElementException
 
 from games_info.api.models import Game
 from games_info.crawler.main import GameCrawler
@@ -15,7 +16,10 @@ class GameInfo(View):
             raise ValidationError(message='Parameter searched_game not found or empty')
 
         crawler = GameCrawler(searched_game, currency)
-        game_datas = crawler.get_data()
+        try:
+            game_datas = crawler.get_data()
+        except NoSuchElementException:
+            return JsonResponse({'error': 'Invalid Game'}, status=400)
 
         game_name = game_datas['steamdb']['real_name']
         current_price = game_datas['steamdb']['current_price']
