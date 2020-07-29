@@ -61,7 +61,7 @@ class GameCrawler:
         how_long_data = soup.find('div', {'class': 'search_list_details_block'})
 
         titles = [title.text for title in how_long_data.find_all('div', {'class': 'shadow_text'})]
-        hours = [hour.text for hour in how_long_data.find_all('div', {'class': 'time_100'})]
+        hours = [hour.text for hour in how_long_data.find_all('div', {'class': 'center'})]
 
         time_data = []
         for title in titles:
