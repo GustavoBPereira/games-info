@@ -30,12 +30,16 @@ class GameCrawler:
         self.driver.find_element_by_class_name('s-hit').click()
 
         try:
-            self.driver.find_element_by_id('js-currency-selector').click()
+            wait = WebDriverWait(self.driver, 10)
+            wait.until(EC.visibility_of_element_located((By.ID, 'js-currency-selector')))
+            self.driver.find_element_by_id('js-currency-selector').send_keys('\n')
         except NoSuchElementException as e:
             self.close()
             raise e
 
         currency = f'//*[@id="prices"]/div[2]/a[@data-cc="{self.currency}"]'
+        wait = WebDriverWait(self.driver, 10)
+        wait.until(EC.visibility_of_element_located((By.XPATH, currency)))
         self.driver.find_element_by_xpath(currency).click()
 
         soup = BeautifulSoup(self.driver.page_source, 'html.parser')
