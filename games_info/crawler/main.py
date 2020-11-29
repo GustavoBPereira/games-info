@@ -1,3 +1,4 @@
+import requests
 from decouple import config
 from selenium import webdriver
 from bs4 import BeautifulSoup
@@ -7,10 +8,16 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 
+
 class GameCrawler:
     accepted_currency = ['us', 'eu', 'ar', 'au', 'br', 'uk', 'ca', 'cl', 'cn', 'az', 'co', 'cr', 'hk', 'in', 'id', 'il',
-                        'jp', 'kz', 'kw', 'my', 'mx', 'nz', 'no', 'pe', 'ph', 'pl', 'qa', 'ru', 'sa', 'sg', 'za', 'pk',
-                        'kr', 'ch', 'tw', 'th', 'tr', 'ae', 'ua', 'uy', 'vn', ]
+                         'jp', 'kz', 'kw', 'my', 'mx', 'nz', 'no', 'pe', 'ph', 'pl', 'qa', 'ru', 'sa', 'sg', 'za', 'pk',
+                         'kr', 'ch', 'tw', 'th', 'tr', 'ae', 'ua', 'uy', 'vn', ]
+
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5)AppleWebKit 537.36 (KHTML, like Gecko) Chrome',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    }
 
     def __init__(self, game_name, currency='us'):
         if config('IS_AWS_INSTANCE', default=False, cast=bool):
@@ -50,20 +57,19 @@ class GameCrawler:
         return {'real_name': real_name, 'current_price': current_price, 'best_price': best_price}
 
     def get_data_from_how_long(self, real_game_name):
+        session = requests.Session()
+        url = 'https://howlongtobeat.com/search_results?page=1'
+        req = session.post(url, headers=self.headers, data={
+            'queryString': real_game_name,
+            't': 'games',
+            'sorthead': 'popular'
+        })
 
-        self.driver.get("https://howlongtobeat.com/")
-        elem = self.driver.find_element_by_class_name("global_search_box")
-        elem.click()
-        elem.clear()
-        elem.send_keys(real_game_name)
+        html = req.text
 
-        wait = WebDriverWait(self.driver, 10)
-        wait.until(EC.visibility_of_element_located((By.CLASS_NAME, 'search_list_details_block')))
-
-        soup = BeautifulSoup(self.driver.page_source, 'html.parser')
+        soup = BeautifulSoup(html, 'html.parser')
 
         how_long_data = soup.find('div', {'class': 'search_list_details_block'})
-
         titles = [title.text for title in how_long_data.find_all('div', {'class': 'shadow_text'})]
         hours = [hour.text for hour in how_long_data.find_all('div', {'class': 'center'})]
 
