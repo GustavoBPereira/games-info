@@ -1,5 +1,8 @@
+import json
+import os
+
 from django.core.exceptions import ValidationError
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseNotAllowed, HttpResponseBadRequest
 from django.views.generic.base import View
 from selenium.common.exceptions import NoSuchElementException
 
@@ -49,3 +52,20 @@ class GameInfo(View):
         registered_games = Game.objects.all()
         data = [game.as_dict() for game in registered_games]
         return JsonResponse(data, safe=False)
+
+
+def app_ids(request):
+    if request.method == 'GET':
+        try:
+            query = request.GET['q']
+        except KeyError:
+            return HttpResponseBadRequest('q param is required')
+        with open(f'{os.path.dirname(os.path.dirname(os.path.abspath(__file__)))}/crawler/app_ids.json', 'r') as f:
+            games_ids = json.load(f)
+            matches = []
+            for game in games_ids['applist']['apps']['app']:
+                if query.lower() in game['name'].lower():
+                    matches.append(game)
+        return JsonResponse({'games': matches})
+    else:
+        return HttpResponseNotAllowed()
