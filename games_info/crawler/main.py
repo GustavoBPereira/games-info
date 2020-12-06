@@ -19,17 +19,11 @@ class GameCrawler:
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
     }
 
-    def __init__(self, game_name, currency='us'):
-        if config('IS_AWS_INSTANCE', default=False, cast=bool):
-            from pyvirtualdisplay import Display
-            display = Display(visible=0, size=(800, 800))
-            display.start()
-
+    def __init__(self, app_id, currency='us'):
         self.currency = currency if currency in self.accepted_currency else 'us'
-        self.driver = webdriver.Chrome()
-        self.game_name = game_name
+        self.app_id = app_id
 
-    def get_data_from_steamdb(self):
+    def _get_data_from_steamdb(self):
         self.driver.get(f"https://steamdb.info/instantsearch/?query={self.game_name.replace(' ', '+')}")
         wait = WebDriverWait(self.driver, 10)
         wait.until(EC.visibility_of_element_located((By.CLASS_NAME, 's-hit')))
@@ -55,6 +49,12 @@ class GameCrawler:
         current_price = prices.next_sibling.next_sibling.text
         best_price = prices.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.text
         return {'real_name': real_name, 'current_price': current_price, 'best_price': best_price}
+
+    def get_data_from_steamdb(self):
+        url = f'http://store.steampowered.com/api/appdetails?appids={self.app_id}&cc={self.currency}&l={self.currency}'
+        req = requests.get(url)
+        data = req.json()[self.app_id]['data']
+        return {'game_name': data['name'], 'price': data['price_overview']}
 
     def get_data_from_how_long(self, real_game_name):
         session = requests.Session()
