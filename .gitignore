@@ -7,3 +7,4 @@ staticfiles
 .idea
 ghostdriver.log
 migrations/
+app_ids.json
