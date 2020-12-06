@@ -1,12 +1,5 @@
 import requests
-from decouple import config
-from selenium import webdriver
 from bs4 import BeautifulSoup
-
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException
 
 
 class GameCrawler:
@@ -22,33 +15,6 @@ class GameCrawler:
     def __init__(self, app_id, currency='us'):
         self.currency = currency if currency in self.accepted_currency else 'us'
         self.app_id = app_id
-
-    def _get_data_from_steamdb(self):
-        self.driver.get(f"https://steamdb.info/instantsearch/?query={self.game_name.replace(' ', '+')}")
-        wait = WebDriverWait(self.driver, 10)
-        wait.until(EC.visibility_of_element_located((By.CLASS_NAME, 's-hit')))
-
-        self.driver.find_element_by_class_name('s-hit').click()
-
-        try:
-            wait = WebDriverWait(self.driver, 10)
-            wait.until(EC.visibility_of_element_located((By.ID, 'js-currency-selector')))
-            self.driver.find_element_by_id('js-currency-selector').send_keys('\n')
-        except NoSuchElementException as e:
-            self.close()
-            raise e
-
-        currency = f'//*[@id="prices"]/div[2]/a[@data-cc="{self.currency}"]'
-        wait = WebDriverWait(self.driver, 10)
-        wait.until(EC.visibility_of_element_located((By.XPATH, currency)))
-        self.driver.find_element_by_xpath(currency).click()
-
-        soup = BeautifulSoup(self.driver.page_source, 'html.parser')
-        real_name = soup.find('h1').text
-        prices = soup.find('td', {'data-cc': self.currency})
-        current_price = prices.next_sibling.next_sibling.text
-        best_price = prices.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.text
-        return {'real_name': real_name, 'current_price': current_price, 'best_price': best_price}
 
     def get_data_from_steamdb(self):
         url = f'http://store.steampowered.com/api/appdetails?appids={self.app_id}&cc={self.currency}&l={self.currency}'
@@ -90,11 +56,6 @@ class GameCrawler:
         stemdb_datas = self.get_data_from_steamdb()
         how_long_datas = self.get_data_from_how_long(stemdb_datas['real_name'])
 
-        self.close()
-
         data['steamdb'] = stemdb_datas
         data['how_long'] = how_long_datas
         return data
-
-    def close(self):
-        self.driver.quit()
