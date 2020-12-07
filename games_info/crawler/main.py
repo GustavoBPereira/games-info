@@ -54,7 +54,7 @@ class GameCrawler:
     def get_data(self):
         data = {}
         stemdb_datas = self.get_data_from_steamdb()
-        how_long_datas = self.get_data_from_how_long(stemdb_datas['real_name'])
+        how_long_datas = self.get_data_from_how_long(stemdb_datas['game_name'])
 
         data['steamdb'] = stemdb_datas
         data['how_long'] = how_long_datas
