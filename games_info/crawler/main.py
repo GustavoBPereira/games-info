@@ -19,8 +19,20 @@ class GameCrawler:
     def get_data_from_steamdb(self):
         url = f'http://store.steampowered.com/api/appdetails?appids={self.app_id}&cc={self.currency}&l={self.currency}'
         req = requests.get(url)
-        data = req.json()[self.app_id]['data']
-        return {'game_name': data['name'], 'price': data['price_overview']}
+        json_response = req.json()[self.app_id]['data']
+        data = {
+            'name': json_response['name'],
+            'is_free': json_response['is_free'],
+            'short_description': json_response['short_description'],
+            'supported_languages': json_response['supported_languages'],
+            'price_overview': json_response.get('price_overview'),
+            'platforms': json_response['platforms'],
+            'metacritic': json_response['metacritic'],
+            'genres': json_response['genres'],
+            'recommendations': json_response['recommendations']['total'],
+            'realease_data': json_response['release_date']
+        }
+        return data
 
     def get_data_from_how_long(self, real_game_name):
         session = requests.Session()
