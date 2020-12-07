@@ -4,7 +4,6 @@ import os
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse, HttpResponseNotAllowed, HttpResponseBadRequest
 from django.views.generic.base import View
-from selenium.common.exceptions import NoSuchElementException
 
 from games_info.api.models import Game
 from games_info.crawler.main import GameCrawler
@@ -13,24 +12,21 @@ from games_info.crawler.main import GameCrawler
 class GameInfo(View):
 
     def post(self, *args, **kwargs):
-        searched_game = self.request.POST.get('searched_game', None)
+        app_id = self.request.POST.get('app_id', None)
         currency = self.request.POST.get('currency', 'us')
-        if searched_game is None or searched_game == '':
+        if app_id is None or app_id == '':
             raise ValidationError(message='Parameter searched_game not found or empty')
 
-        crawler = GameCrawler(searched_game, currency)
-        try:
-            game_datas = crawler.get_data()
-        except NoSuchElementException:
-            return JsonResponse({'error': 'Invalid Game', 'searched_game': searched_game}, status=400)
+        crawler = GameCrawler(app_id, currency=currency)
+        game_datas = crawler.get_data()
 
-        game_name = game_datas['steamdb']['real_name']
-        current_price = game_datas['steamdb']['current_price']
-        best_price = game_datas['steamdb']['best_price']
+        game_name = game_datas['steamdb']['game_name']
+        current_price = game_datas['steamdb']['price']
+        best_price = 'not implemented yet'
 
         try:
             game = Game.objects.get(game_name=game_name)
-            game.searched_game = searched_game
+            game.searched_game = 'not implemented yet'
             game.game_name = game_name
             game.current_price = current_price
             game.best_price = best_price
@@ -41,7 +37,7 @@ class GameInfo(View):
             status_code = 200
         except Game.DoesNotExist:
             status_code = 201
-            game = Game.objects.create(searched_game=searched_game, game_name=game_name,
+            game = Game.objects.create(searched_game='not implemented yet', game_name=game_name,
                                        current_price=current_price, best_price=best_price)
             for time_data in game_datas['how_long']:
                 game.time_information.create(description=time_data[0], content=time_data[1])
