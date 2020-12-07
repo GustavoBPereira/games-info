@@ -30,7 +30,7 @@ class GameCrawler:
             'metacritic': json_response['metacritic'],
             'genres': json_response['genres'],
             'recommendations': json_response['recommendations']['total'],
-            'realease_data': json_response['release_date']
+            'realease_date': json_response['release_date']
         }
         return data
 
