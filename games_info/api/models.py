@@ -15,18 +15,51 @@ class TimeData(models.Model):
 class Game(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    searched_game = models.CharField(max_length=128)
+
+    app_id = models.IntegerField(primary_key=True)
+
     game_name = models.CharField(max_length=128)
-    best_price = models.CharField(max_length=25)
-    current_price = models.CharField(max_length=25)
+    short_description = models.TextField()
+    supported_languages = models.TextField()
+
+    metacritic_score = models.FloatField()
+    metacritic_url = models.URLField()
+    recommendations = models.IntegerField()
+    comming_soon = models.BooleanField()
+    release_date = models.DateField()
+
+    is_free = models.BooleanField()
+    discount_percent = models.FloatField(null=True, blank=True)
+    initial_formatted = models.CharField(null=True, blank=True, max_length=64)
+    final_formatted = models.CharField(null=True, blank=True, max_length=64)
+
     time_information = models.ManyToManyField(TimeData, related_name='time_information')
 
     def as_dict(self):
         return {
-            'id': self.pk,
-            'searched_game': self.searched_game,
+            'id': self.app_id,
             'game_name': self.game_name,
-            'best_price': self.best_price,
-            'current_price': self.current_price,
+            'short_description': self.short_description,
+            'supported_languages': self.supported_languages,
+            'metacritic_score': self.metacritic_score,
+            'metacritic_url': self.metacritic_url,
+            'recommendations': self.recommendations,
+            'comming_soon': self.comming_soon,
+            'release_date': self.release_date,
+            'is_free': self.is_free,
+            'discount_percent': self.discount_percent,
+            'initial_formatted': self.initial_formatted,
+            'final_formatted': self.final_formatted,
             'time_information': [time_info.as_dict() for time_info in self.time_information.all()]
         }
+
+
+class Platform(models.Model):
+    platform = models.CharField(max_length=128)
+    supported = models.BooleanField()
+    game = models.ForeignKey('Game', on_delete=models.CASCADE)
+
+
+class Genre(models.Model):
+    name = models.CharField(max_length=64)
+    game = models.ForeignKey('Game', on_delete=models.CASCADE)
