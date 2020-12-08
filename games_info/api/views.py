@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from django.http import JsonResponse, HttpResponseNotAllowed, HttpResponseBadRequest
 from django.views.generic.base import View
 
-from games_info.api.models import Game
+from games_info.api.models import Game, Platform, Genre
 from games_info.crawler.main import GameCrawler
 
 
@@ -20,27 +20,39 @@ class GameInfo(View):
         crawler = GameCrawler(app_id, currency=currency)
         game_datas = crawler.get_data()
 
-        game_name = game_datas['steamdb']['game_name']
-        current_price = game_datas['steamdb']['price']
-        best_price = 'not implemented yet'
+        steam_data = game_datas['steamdb']
 
         try:
-            game = Game.objects.get(game_name=game_name)
-            game.searched_game = 'not implemented yet'
-            game.game_name = game_name
-            game.current_price = current_price
-            game.best_price = best_price
-            if not game.time_information.exists():
-                for time_data in game_datas['how_long']:
-                    game.time_information.create(description=time_data[0], content=time_data[1])
+            game = Game.objects.get(app_id=app_id, currency=steam_data['price_overview']['currency'])
             game.save()
             status_code = 200
+
         except Game.DoesNotExist:
             status_code = 201
-            game = Game.objects.create(searched_game='not implemented yet', game_name=game_name,
-                                       current_price=current_price, best_price=best_price)
+            game = Game.objects.create(
+                app_id=app_id,
+                currency=steam_data['price_overview']['currency'],
+                game_name=steam_data['name'],
+                short_description=steam_data['short_description'],
+                supported_languages=steam_data['supported_languages'],
+                metacritic_score=steam_data['metacritic']['score'],
+                metacritic_url=steam_data['metacritic']['url'],
+                recommendations=steam_data['recommendations'],
+                coming_soon=steam_data['release_date']['coming_soon'],
+                release_date=steam_data['release_date']['date'],
+                is_free=steam_data['is_free'],
+                discount_percent=steam_data['price_overview']['discount_percent'],
+                initial_formatted=steam_data['price_overview']['initial_formatted'],
+                final_formatted=steam_data['price_overview']['final_formatted'],
+            )
             for time_data in game_datas['how_long']:
                 game.time_information.create(description=time_data[0], content=time_data[1])
+
+            for platform in steam_data['platforms'].items():
+                Platform.objects.create(game=game, platform=platform[0], supported=platform[1])
+
+            for genre in steam_data['genres']:
+                Genre.objects.create(game=game, name=genre['description'])
 
         return JsonResponse(game.as_dict(), safe=False, status=status_code)
 

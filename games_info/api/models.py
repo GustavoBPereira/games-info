@@ -16,7 +16,8 @@ class Game(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    app_id = models.IntegerField(primary_key=True)
+    app_id = models.IntegerField()
+    currency = models.CharField(max_length=32)
 
     game_name = models.CharField(max_length=128)
     short_description = models.TextField()
