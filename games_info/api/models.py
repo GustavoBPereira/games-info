@@ -25,8 +25,8 @@ class Game(models.Model):
     metacritic_score = models.FloatField()
     metacritic_url = models.URLField()
     recommendations = models.IntegerField()
-    comming_soon = models.BooleanField()
-    release_date = models.DateField()
+    coming_soon = models.BooleanField()
+    release_date = models.CharField(max_length=32)
 
     is_free = models.BooleanField()
     discount_percent = models.FloatField(null=True, blank=True)
@@ -44,7 +44,7 @@ class Game(models.Model):
             'metacritic_score': self.metacritic_score,
             'metacritic_url': self.metacritic_url,
             'recommendations': self.recommendations,
-            'comming_soon': self.comming_soon,
+            'comming_soon': self.coming_soon,
             'release_date': self.release_date,
             'is_free': self.is_free,
             'discount_percent': self.discount_percent,

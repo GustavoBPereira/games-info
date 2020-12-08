@@ -30,7 +30,7 @@ class GameCrawler:
             'metacritic': json_response['metacritic'],
             'genres': json_response['genres'],
             'recommendations': json_response['recommendations']['total'],
-            'realease_date': json_response['release_date']
+            'release_date': json_response['release_date']
         }
         return data
 
@@ -66,7 +66,7 @@ class GameCrawler:
     def get_data(self):
         data = {}
         stemdb_datas = self.get_data_from_steamdb()
-        how_long_datas = self.get_data_from_how_long(stemdb_datas['game_name'])
+        how_long_datas = self.get_data_from_how_long(stemdb_datas['name'])
 
         data['steamdb'] = stemdb_datas
         data['how_long'] = how_long_datas
