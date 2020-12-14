@@ -3,9 +3,15 @@ from bs4 import BeautifulSoup
 
 
 class GameCrawler:
-    accepted_currency = ['us', 'eu', 'ar', 'au', 'br', 'uk', 'ca', 'cl', 'cn', 'az', 'co', 'cr', 'hk', 'in', 'id', 'il',
-                         'jp', 'kz', 'kw', 'my', 'mx', 'nz', 'no', 'pe', 'ph', 'pl', 'qa', 'ru', 'sa', 'sg', 'za', 'pk',
-                         'kr', 'ch', 'tw', 'th', 'tr', 'ae', 'ua', 'uy', 'vn', ]
+    # accepted_currency = ['us', 'eu', 'ar', 'au', 'br', 'uk', 'ca', 'cl', 'cn', 'az', 'co', 'cr', 'hk', 'in',
+    #                   'id', 'il', 'jp', 'kz', 'kw', 'my', 'mx', 'nz', 'no', 'pe', 'ph', 'pl', 'qa', 'ru', 'sa',
+    #                   'sg', 'za', 'pk', 'kr', 'ch', 'tw', 'th', 'tr', 'ae', 'ua', 'uy', 'vn', ]
+
+    currency_and_language = {
+        'ar': 'spanish',
+        'us': 'english',
+        'br': 'brazilian'
+    }
 
     headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5)AppleWebKit 537.36 (KHTML, like Gecko) Chrome',
@@ -13,11 +19,12 @@ class GameCrawler:
     }
 
     def __init__(self, app_id, currency='us'):
-        self.currency = currency if currency in self.accepted_currency else 'us'
+        self.currency = currency if currency in list(self.currency_and_language.keys()) else 'us'
         self.app_id = app_id
 
     def get_data_from_steamdb(self):
-        url = f'http://store.steampowered.com/api/appdetails?appids={self.app_id}&cc={self.currency}&l={self.currency}'
+        url = f'http://store.steampowered.com/api/appdetails?' \
+              f'appids={self.app_id}&cc={self.currency}&l={self.currency_and_language[self.currency]}'
         req = requests.get(url)
         json_response = req.json()[self.app_id]['data']
         data = {
