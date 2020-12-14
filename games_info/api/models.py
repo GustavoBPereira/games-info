@@ -36,6 +36,8 @@ class Game(models.Model):
 
     time_information = models.ManyToManyField(TimeData, related_name='time_information')
 
+    header_image = models.URLField()
+
     def as_dict(self):
         return {
             'id': self.app_id,
@@ -51,7 +53,8 @@ class Game(models.Model):
             'discount_percent': self.discount_percent,
             'initial_formatted': self.initial_formatted,
             'final_formatted': self.final_formatted,
-            'time_information': [time_info.as_dict() for time_info in self.time_information.all()]
+            'time_information': [time_info.as_dict() for time_info in self.time_information.all()],
+            'header_image': self.header_image
         }
 
 
