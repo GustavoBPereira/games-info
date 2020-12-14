@@ -44,6 +44,7 @@ class GameInfo(View):
                 discount_percent=steam_data['price_overview']['discount_percent'],
                 initial_formatted=steam_data['price_overview']['initial_formatted'],
                 final_formatted=steam_data['price_overview']['final_formatted'],
+                header_image=steam_data['header_image']
             )
             for time_data in game_datas['how_long']:
                 game.time_information.create(description=time_data[0], content=time_data[1])
