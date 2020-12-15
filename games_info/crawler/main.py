@@ -20,7 +20,7 @@ class GameCrawler:
         req = requests.get(url)
         json_response = req.json()[self.app_id]['data']
         data = {
-            'name': json_response['name'],
+            'game_name': json_response['name'],
             'is_free': json_response['is_free'],
             'short_description': json_response['short_description'],
             'supported_languages': json_response['supported_languages'],
@@ -66,7 +66,7 @@ class GameCrawler:
     def get_data(self):
         data = {}
         stemdb_datas = self.get_data_from_steamdb()
-        how_long_datas = self.get_data_from_how_long(stemdb_datas['name'])
+        how_long_datas = self.get_data_from_how_long(stemdb_datas['game_name'])
 
         data['steamdb'] = stemdb_datas
         data['how_long'] = how_long_datas

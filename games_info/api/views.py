@@ -32,7 +32,7 @@ class GameInfo(View):
             game = Game.objects.create(
                 app_id=app_id,
                 currency=steam_data['price_overview']['currency'],
-                game_name=steam_data['name'],
+                game_name=steam_data['game_name'],
                 short_description=steam_data['short_description'],
                 supported_languages=steam_data['supported_languages'],
                 metacritic_score=steam_data['metacritic']['score'],
