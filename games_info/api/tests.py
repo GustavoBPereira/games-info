@@ -6,13 +6,13 @@ from games_info.api.models import Game
 class HomeTest(TestCase):
     # Removing game that will be tested
     try:
-        game = Game.objects.get(game_name="Hellblade: Senua's Sacrifice")
+        game = Game.objects.get(app_id='414340', currency='USD')
         game.delete()
     except Game.DoesNotExist:
         pass
 
     c = Client()
-    json_response = c.post('/games-api/', {'searched_game': 'hellblade'})
+    json_response = c.post('/api/game/', {'app_id': '414340', 'currency': 'us'})
 
     def test_response_with_currect_name(self):
         self.assertEqual(self.json_response.json()['game_name'], "Hellblade: Senua's Sacrifice")
