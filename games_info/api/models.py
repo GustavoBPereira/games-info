@@ -23,9 +23,9 @@ class Game(models.Model):
     short_description = models.TextField()
     supported_languages = models.TextField()
 
-    metacritic_score = models.FloatField()
-    metacritic_url = models.URLField()
-    recommendations = models.IntegerField()
+    metacritic_score = models.FloatField(null=True, blank=True)
+    metacritic_url = models.URLField(null=True, blank=True)
+    recommendations = models.IntegerField(null=True, blank=True)
     coming_soon = models.BooleanField()
     release_date = models.CharField(max_length=32)
 

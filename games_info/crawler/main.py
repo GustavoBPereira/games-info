@@ -26,9 +26,9 @@ class GameCrawler:
             'supported_languages': json_response['supported_languages'],
             'price_overview': json_response.get('price_overview'),
             'platforms': json_response['platforms'],
-            'metacritic': json_response['metacritic'],
+            'metacritic': json_response.get('metacritic', {}),
             'genres': json_response['genres'],
-            'recommendations': json_response['recommendations']['total'],
+            'recommendations': json_response.get('recommendations', {}).get('total'),
             'release_date': json_response['release_date'],
             'header_image': json_response['header_image']
         }
