@@ -56,3 +56,13 @@ span.value-field {
 span.hint {
     font-style: italic;
 }
+
+img#img-result {
+    margin-top: 5%;
+    margin-left: 25%;
+    padding-left: 0;
+}
+
+pre#json-result {
+    color: #50fa7b;
+}
