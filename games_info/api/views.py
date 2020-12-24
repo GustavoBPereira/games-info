@@ -69,7 +69,8 @@ def app_ids(request):
             query = request.GET['q']
         except KeyError:
             return HttpResponseBadRequest('q param is required')
-        with open(f'{os.path.dirname(os.path.dirname(os.path.abspath(__file__)))}/crawler/app_ids.json', 'r') as f:
+        with open(f'{os.path.dirname(os.path.dirname(os.path.abspath(__file__)))}/crawler/app_ids.json', 'r',
+                  encoding='utf-8') as f:
             games_ids = json.load(f)
             matches = []
             for game in games_ids['applist']['apps']['app']:
