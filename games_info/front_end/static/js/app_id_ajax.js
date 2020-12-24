@@ -20,6 +20,8 @@ $(".search_select2").select2({
     },
 });
 
+$("#currency-input").select2()
+
 $(".search_select2").on('select2:select', function () {
     let app_id = $(this).select2('data')[0]['id']
     let currency = $('#currency-input option:selected').val()
