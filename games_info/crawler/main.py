@@ -20,6 +20,7 @@ class GameCrawler:
         req = requests.get(url)
         json_response = req.json()[self.app_id]['data']
         data = {
+            'type': json_response['type'],
             'game_name': json_response['name'],
             'is_free': json_response['is_free'],
             'short_description': json_response['short_description'],

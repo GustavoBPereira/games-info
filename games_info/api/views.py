@@ -31,6 +31,7 @@ class GameInfo(View):
             status_code = 201
             game = Game.objects.create(
                 app_id=app_id,
+                type=steam_data['type'],
                 currency=steam_data['price_overview']['currency'],
                 game_name=steam_data['game_name'],
                 short_description=steam_data['short_description'],
@@ -76,8 +77,8 @@ def app_ids(request):
             for game in games_ids['applist']['apps']['app']:
                 if query.lower() in game['name'].lower():
                     matches.append(game)
-                    if len(matches) > 7:
-                        break
+                    # if len(matches) > 7:
+                    #     break
             sorted_matches = sorted(matches, key=lambda k: len(k['name']))
         return JsonResponse({'games': sorted_matches})
     else:

@@ -20,6 +20,7 @@ class Game(models.Model):
     currency = models.CharField(max_length=32)
 
     game_name = models.CharField(max_length=128)
+    type = models.CharField(max_length=64, blank=True, null=True)
     short_description = models.TextField()
     supported_languages = models.TextField()
 
@@ -41,6 +42,7 @@ class Game(models.Model):
     def as_dict(self):
         return {
             'id': self.app_id,
+            'type': self.type,
             'game_name': self.game_name,
             'short_description': self.short_description,
             'supported_languages': self.supported_languages,
