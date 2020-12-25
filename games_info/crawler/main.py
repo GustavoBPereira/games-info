@@ -36,11 +36,10 @@ class GameCrawler:
         return data
 
     def get_data_from_how_long(self, real_game_name):
-        # TODO: Remove dirty string like: "DARK SOULS™ III" must be "DARK SOULS III"
         session = requests.Session()
         url = 'https://howlongtobeat.com/search_results?page=1'
         req = session.post(url, headers=self.headers, data={
-            'queryString': real_game_name,
+            'queryString': real_game_name.replace('™', ''),
             't': 'games',
             'sorthead': 'popular'
         })
