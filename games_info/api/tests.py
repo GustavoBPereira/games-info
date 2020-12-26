@@ -1,6 +1,7 @@
 from django.test import TestCase, Client
 
 from games_info.api.models import Game
+from games_info.crawler.exceptions import TypeNotSupported
 
 
 class HomeTest(TestCase):
@@ -20,6 +21,9 @@ class HomeTest(TestCase):
     def test_status_code_new_game_searched(self):
         self.assertEqual(self.json_response.status_code, 201)
 
+    def test_type_must_be_game(self):
+        self.assertEqual(self.json_response.json()['type'], 'game')
+
     def test_content_returned_time_information(self):
         expected_data = [
             {
@@ -36,3 +40,19 @@ class HomeTest(TestCase):
             }
         ]
         self.assertEqual(self.json_response.json()['time_information'], expected_data)
+
+    def test_dlc_search(self):
+        req = self.c.post('/api/game/', {'app_id': '378648', 'currency': 'us'})
+        self.assertEqual(req.json()['type'], 'dlc')
+
+    def test_app_ids_finding_game_id(self):
+        req = self.c.get("/api/app_ids/?q=Hellblade: Senua's Sacrifice")
+        self.assertIn(414340, [app['appid'] for app in req.json()['games']])
+
+    def test_empty_search_when_type_soundtrack(self):
+        req = self.c.get("/api/app_ids/?q=soundtrack")
+        self.assertEqual(req.json()['games'], [])
+
+    def test_unsupported_type_in_steam_crawler(self):
+        with self.assertRaises(TypeNotSupported):
+            self.c.post('/api/game/', {'app_id': '598190', 'currency': 'us'})
