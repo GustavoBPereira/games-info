@@ -69,7 +69,6 @@ class GameCrawler:
                 time_data.append([title, cleaned_hour])
                 hours.remove(hour)
                 break
-        print(time_data)
         return time_data
 
     def get_data(self):
