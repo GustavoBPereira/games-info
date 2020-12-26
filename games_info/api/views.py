@@ -75,11 +75,9 @@ def app_ids(request):
             games_ids = json.load(f)
             matches = []
             for game in games_ids['applist']['apps']['app']:
-                if query.lower() in game['name'].lower():
+                if query.lower() in game['name'].lower() and 'soundtrack' not in game['name'].lower():
                     matches.append(game)
-                    # if len(matches) > 7:
-                    #     break
             sorted_matches = sorted(matches, key=lambda k: len(k['name']))
-        return JsonResponse({'games': sorted_matches})
+        return JsonResponse({'games': sorted_matches[0:15]})
     else:
         return HttpResponseNotAllowed()
