@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from games_info.crawler import accepted_currency
+from games_info.crawler.exceptions import TypeNotSupported
 
 
 class GameCrawler:
@@ -19,6 +20,9 @@ class GameCrawler:
               f'appids={self.app_id}&cc={self.currency}&l={accepted_currency[self.currency]["language"]}'
         req = requests.get(url)
         json_response = req.json()[self.app_id]['data']
+        if json_response['type'].lower() not in ['game', 'dlc']:
+            raise TypeNotSupported(f'steam crawler only supports game and dlc, type finded is: '
+                                   f'{json_response["type"].lower()}')
         data = {
             'type': json_response['type'],
             'game_name': json_response['name'],

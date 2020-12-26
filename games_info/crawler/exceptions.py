@@ -1,0 +1,3 @@
+
+class TypeNotSupported(Exception):
+    pass
