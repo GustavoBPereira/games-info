@@ -52,9 +52,12 @@ class GameCrawler:
 
         soup = BeautifulSoup(html, 'html.parser')
 
-        how_long_data = soup.find('div', {'class': 'search_list_details_block'})
-        titles = [title.text for title in how_long_data.find_all('div', {'class': 'shadow_text'})]
-        hours = [hour.text for hour in how_long_data.find_all('div', {'class': 'center'})]
+        try:
+            how_long_data = soup.find('div', {'class': 'search_list_details_block'})
+            titles = [title.text for title in how_long_data.find_all('div', {'class': 'shadow_text'})]
+            hours = [hour.text for hour in how_long_data.find_all('div', {'class': 'center'})]
+        except AttributeError:
+            return [['Time information not find', '']]
 
         time_data = []
         for title in titles:
@@ -66,6 +69,7 @@ class GameCrawler:
                 time_data.append([title, cleaned_hour])
                 hours.remove(hour)
                 break
+        print(time_data)
         return time_data
 
     def get_data(self):
