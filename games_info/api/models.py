@@ -56,7 +56,11 @@ class Game(models.Model):
             'initial_formatted': self.initial_formatted,
             'final_formatted': self.final_formatted,
             'time_information': [time_info.as_dict() for time_info in self.time_information.all()],
-            'header_image': self.header_image
+            'header_image': self.header_image,
+            'platforms': [
+                {'platform': platform.platform, 'supported': platform.supported} for platform in self.platform_set.all()
+            ],
+            'genres': [genre.name for genre in self.genre_set.all()]
         }
 
 
