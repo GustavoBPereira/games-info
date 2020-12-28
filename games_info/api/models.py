@@ -41,7 +41,8 @@ class Game(models.Model):
 
     def as_dict(self):
         return {
-            'id': self.app_id,
+            'id': self.pk,
+            'app_id': self.app_id,
             'type': self.type,
             'game_name': self.game_name,
             'short_description': self.short_description,
