@@ -28,9 +28,11 @@ $(".search_select2").on('select2:select', function () {
     var posting = $.post('api/game/', {app_id: app_id, currency: currency});
 
     posting.done(function (data) {
-        let pretty_json = JSON.stringify(data, null, 4)
-        $('img#img-result').attr('src', data['header_image']);
-        $('pre#json-result').text(pretty_json)
+        var get_detail = $.get('detail/'+data['id'])
+
+        get_detail.done(function (data){
+            $('div#result').append(data)
+        })
 
         $('.search_select2').find('option').remove()
     });

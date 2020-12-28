@@ -8,13 +8,13 @@ h1 {
     color: #6272a4;
 }
 
-pre#json-result {
-    color: #50fa7b;
-}
-
 div.row {
     margin-top: 2%;
 }
 select.search_select2 {
     width: 100%
+}
+
+p {
+    color: #50fa7b;
 }
