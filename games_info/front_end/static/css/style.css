@@ -18,3 +18,18 @@ select.search_select2 {
 p {
     color: #50fa7b;
 }
+
+.percent_discount {
+    font-weight: bold;
+    color: #000000;
+    background-color: #84fba2;
+}
+
+.risked_initial, .final_formatted {
+    color: #ffffff;
+    background-color: #000000;
+}
+
+.item-title {
+    color: #f1fa8c;
+}

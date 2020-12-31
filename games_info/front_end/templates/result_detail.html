@@ -1,5 +1,18 @@
+{% load custom_tags %}
+
 <div>
-    <p>{{ game.game_name }}</p>
+    <div>
+        <p>
+            <span class="item-title">{{ game.type | capfirst }}:</span>
+                {{ game.game_name }}
+            <span class="item-title">Price:</span>
+                {{ game | render_price }}
+        </p>
+    </div>
+
+
+    <div>
+        <img src="{{ game.header_image }}">
+    </div>
     <p>{{ game.short_description }}</p>
-    <img src="{{ game.header_image }}">
 </div>
