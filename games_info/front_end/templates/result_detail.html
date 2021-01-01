@@ -4,17 +4,35 @@
     <div id="background-image">
         <img src="{{ game.background_image }}" class="rounded">
     </div>
-    <div id="cover" class="text-center">
-        <img src="{{ game.header_image }}" class="rounded">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm col-sm-4">
+                <div>
+                    <p>
+                        <span class="item-title">{{ game.type | capfirst }}:</span>
+                            {{ game.game_name }}
+                        <span class="item-title">Price:</span>
+                            {{ game | render_price }}
+                    </p>
+                </div>
+            </div>
+            <div class="col-sm col-sm-4">
+                <div id="cover">
+                    <img src="{{ game.header_image }}" class="rounded">
+                </div>
+            </div>
+            <div class="col-sm col-sm-4">
+                    <ul class="list-group time-info-list">
+                        {% for time_info in game.time_information %}
+                            <li class="list-group-item time-info-item">{{ time_info.description }} - {{ time_info.content }}</li>
+                        {% endfor %}
+                    </ul>
+            </div>
+        </div>
+
+
     </div>
-    <div>
-        <p>
-            <span class="item-title">{{ game.type | capfirst }}:</span>
-                {{ game.game_name }}
-            <span class="item-title">Price:</span>
-                {{ game | render_price }}
-        </p>
-    </div>
+
 
 
     <p>{{ game.short_description }}</p>
