@@ -38,6 +38,7 @@ class Game(models.Model):
     time_information = models.ManyToManyField(TimeData, related_name='time_information')
 
     header_image = models.URLField()
+    background_image = models.URLField(blank=True, null=True)
 
     def as_dict(self):
         return {
@@ -58,6 +59,7 @@ class Game(models.Model):
             'final_formatted': self.final_formatted,
             'time_information': [time_info.as_dict() for time_info in self.time_information.all()],
             'header_image': self.header_image,
+            'background_image': self.background_image,
             'platforms': [
                 {'platform': platform.platform, 'supported': platform.supported} for platform in self.platform_set.all()
             ],
