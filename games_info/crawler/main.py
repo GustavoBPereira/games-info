@@ -35,7 +35,8 @@ class GameCrawler:
             'genres': json_response['genres'],
             'recommendations': json_response.get('recommendations', {}).get('total'),
             'release_date': json_response['release_date'],
-            'header_image': json_response['header_image']
+            'header_image': json_response['header_image'],
+            'background_image': json_response.get('screenshots',[{}])[0].get('path_full', None)
         }
         return data
 
