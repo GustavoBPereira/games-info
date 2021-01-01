@@ -2,7 +2,10 @@
 
 <div>
     <div id="background-image">
-        <img src="{{ game.background_image }}">
+        <img src="{{ game.background_image }}" class="rounded">
+    </div>
+    <div id="cover" class="text-center">
+        <img src="{{ game.header_image }}" class="rounded">
     </div>
     <div>
         <p>
@@ -14,8 +17,5 @@
     </div>
 
 
-    <div>
-        <img src="{{ game.header_image }}">
-    </div>
     <p>{{ game.short_description }}</p>
 </div>

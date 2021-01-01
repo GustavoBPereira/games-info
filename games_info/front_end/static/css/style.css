@@ -40,3 +40,10 @@ div#background-image img {
     object-fit: cover;
     object-position: 50% 50%;
 }
+
+div#cover img {
+    margin-top: -2.5%;
+    padding: 1px;
+    border: 1px solid #6272a4;
+    background-color: #000000;
+}
