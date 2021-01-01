@@ -1,6 +1,9 @@
 {% load custom_tags %}
 
 <div>
+    <div id="background-image">
+        <img src="{{ game.background_image }}">
+    </div>
     <div>
         <p>
             <span class="item-title">{{ game.type | capfirst }}:</span>

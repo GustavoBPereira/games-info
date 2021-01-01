@@ -33,3 +33,10 @@ p {
 .item-title {
     color: #f1fa8c;
 }
+
+div#background-image img {
+    width: 1080px;
+    height: 280px;
+    object-fit: cover;
+    object-position: 50% 50%;
+}
