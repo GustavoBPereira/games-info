@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from django.http import JsonResponse, HttpResponseNotAllowed, HttpResponseBadRequest
 from django.views.generic.base import View
 
-from games_info.api.models import Game, Platform, Genre
+from games_info.api.models import Game, Platform, Genre, TimeData
 from games_info.crawler.main import GameCrawler
 
 
@@ -49,7 +49,7 @@ class GameInfo(View):
                 background_image=steam_data['background_image'],
             )
             for time_data in game_datas['how_long']:
-                game.time_information.create(description=time_data[0], content=time_data[1])
+                TimeData.objects.create(game=game, description=time_data[0], content=time_data[1])
 
             for platform in steam_data['platforms'].items():
                 Platform.objects.create(game=game, platform=platform[0], supported=platform[1])

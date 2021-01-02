@@ -1,17 +1,6 @@
 from django.db import models
 
 
-class TimeData(models.Model):
-    description = models.CharField(max_length=64)
-    content = models.CharField(max_length=64)
-
-    def as_dict(self):
-        return {
-            'description': self.description,
-            'content': self.content
-        }
-
-
 class Game(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -35,8 +24,6 @@ class Game(models.Model):
     initial_formatted = models.CharField(null=True, blank=True, max_length=64)
     final_formatted = models.CharField(null=True, blank=True, max_length=64)
 
-    time_information = models.ManyToManyField(TimeData, related_name='time_information')
-
     header_image = models.URLField()
     background_image = models.URLField(blank=True, null=True)
 
@@ -57,13 +44,25 @@ class Game(models.Model):
             'discount_percent': self.discount_percent,
             'initial_formatted': self.initial_formatted,
             'final_formatted': self.final_formatted,
-            'time_information': [time_info.as_dict() for time_info in self.time_information.all()],
+            'time_information': [time_info.as_dict() for time_info in self.timedata_set.all()],
             'header_image': self.header_image,
             'background_image': self.background_image,
             'platforms': [
                 {'platform': platform.platform, 'supported': platform.supported} for platform in self.platform_set.all()
             ],
             'genres': [genre.name for genre in self.genre_set.all()]
+        }
+
+
+class TimeData(models.Model):
+    description = models.CharField(max_length=64)
+    content = models.CharField(max_length=64)
+    game = models.ForeignKey('Game', on_delete=models.CASCADE)
+
+    def as_dict(self):
+        return {
+            'description': self.description,
+            'content': self.content
         }
 
 
