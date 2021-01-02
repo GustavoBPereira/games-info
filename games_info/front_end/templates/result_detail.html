@@ -7,14 +7,23 @@
     <div class="container">
         <div class="row">
             <div class="col-sm col-sm-4">
-                <div>
-                    <p>
-                        <span class="item-title">{{ game.type | capfirst }}:</span>
-                            {{ game.game_name }}
-                        <span class="item-title">Price:</span>
-                            {{ game | render_price }}
-                    </p>
-                </div>
+                    <ul class="list-group time-info-list" id="game-info-list">
+                        <li class="list-group-item">
+                            {{ game.type | capfirst }}: {{ game.game_name }}
+                        </li>
+                        <li class="list-group-item">
+                            Price: {{ game | render_price }}
+                        </li>
+                        <li class="list-group-item">
+                            Release date: {{ game.release_date }}
+                        </li>
+                        <li class="list-group-item">
+                            Recommendations: {{ game.recommendations }}
+                        </li>
+                        <li class="list-group-item">
+                            <a href="{{ game.metacritic_url }}">Metacritic_score:</a>{{ game.metacritic_score }}
+                        </li>
+                    </ul>
             </div>
             <div class="col-sm col-sm-4">
                 <div id="cover">
@@ -24,7 +33,7 @@
             <div class="col-sm col-sm-4">
                     <ul class="list-group time-info-list">
                         {% for time_info in game.time_information %}
-                            <li class="list-group-item time-info-item">{{ time_info.description }} - {{ time_info.content }}</li>
+                            <li class="list-group-item time-info-item">{{ time_info.description }}: {{ time_info.content }}</li>
                         {% endfor %}
                     </ul>
             </div>
@@ -36,4 +45,13 @@
 
 
     <p>{{ game.short_description }}</p>
+
+
+{#type: game_name#}
+{#price#}
+{#date#}
+{#recomendations#}
+{#metacritc#}
+
+{{ game }}
 </div>

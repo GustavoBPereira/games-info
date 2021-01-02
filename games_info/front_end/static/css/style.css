@@ -18,20 +18,17 @@ select.search_select2 {
 p {
     color: #50fa7b;
 }
+.risked_initial, .final_formatted, .percent_discount {
+    padding-left: 1%;
+}
 
 .percent_discount {
-    font-weight: bold;
     color: #000000;
     background-color: #84fba2;
 }
 
 .risked_initial, .final_formatted {
-    color: #ffffff;
-    background-color: #000000;
-}
-
-.item-title {
-    color: #f1fa8c;
+    color: #d4d4d6;
 }
 
 div#background-image img {
@@ -60,7 +57,15 @@ ul.time-info-list {
 li.time-info-item {
     margin-left: 25%;
     font-size: 95%;
+
+}
+
+li.list-group-item {
     color: #d4d4d6;
     background-color: #1c1d25;
     border-color: #3d3f4a;
+}
+
+ul#game-info-list {
+    margin-right: 6%;
 }

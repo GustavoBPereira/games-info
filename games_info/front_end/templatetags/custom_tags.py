@@ -12,7 +12,7 @@ def render_price(value):
             return value['final_formatted']
         else:
             text = f'<span class="percent_discount">{value["discount_percent"]}% </span>' \
-                   f'<span class="risked_initial">{value["initial_formatted"]} </span>' \
+                   f'<span class="risked_initial"><s>{value["initial_formatted"]}</s></span>' \
                    f'<span class="final_formatted">{value["final_formatted"]}</span>'
             return mark_safe(text)
 
