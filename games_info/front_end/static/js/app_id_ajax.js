@@ -31,6 +31,7 @@ $(".search_select2").on('select2:select', function () {
         var get_detail = $.get('detail/'+data['id'])
 
         get_detail.done(function (data){
+            $('div#result').empty()
             $('div#result').append(data)
         })
 
