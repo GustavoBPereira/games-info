@@ -42,7 +42,7 @@
 
         <div class="row">
             <div class="col-sm col-sm-9">
-                <div class="border border-dark" id="description">
+                <div class="border border-dark rounded" id="description">
                     <p id="description" class="text-center">{{ game.short_description }}<br>Genres:
                         {% for genre in game.genres %}
                             {{ genre }}{% if not forloop.last %},{% else %}.{% endif %}

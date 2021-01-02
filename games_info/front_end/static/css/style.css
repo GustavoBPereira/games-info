@@ -73,8 +73,7 @@ ul#game-info-list {
 }
 
 div#description {
-    /*margin-left: 30.6%;*/
-    /*margin-right: 25%;*/
+    background-color: #1c1d25;
 }
 
 ul.genre-list {
