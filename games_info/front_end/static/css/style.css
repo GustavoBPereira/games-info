@@ -43,7 +43,7 @@ div#background-image img {
 
 div#cover img {
     margin-top: -11.5%;
-    margin-left: -5%;
+    margin-left: -11.5%;
     padding: 1px;
     border: 1px solid #3d3f4a;
     background-color: #000000;
@@ -58,8 +58,8 @@ ul.time-info-list {
 }
 
 li.time-info-item {
-    margin-left: 31%;
-    font-size: 88%;
+    margin-left: 25%;
+    font-size: 95%;
     color: #d4d4d6;
     background-color: #1c1d25;
     border-color: #3d3f4a;
