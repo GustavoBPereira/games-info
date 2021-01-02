@@ -44,7 +44,7 @@ class GameCrawler:
         session = requests.Session()
         url = 'https://howlongtobeat.com/search_results?page=1'
         req = session.post(url, headers=self.headers, data={
-            'queryString': real_game_name.replace('™', ''),
+            'queryString': real_game_name.replace('™', '').replace('®', ''),
             't': 'games',
             'sorthead': 'popular'
         })
