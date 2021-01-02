@@ -11,13 +11,15 @@ h1 {
 div.row {
     margin-top: 2%;
 }
+
 select.search_select2 {
     width: 100%
 }
 
 p {
-    color: #50fa7b;
+    color: #d4d4d6;
 }
+
 .risked_initial, .final_formatted, .percent_discount {
     padding-left: 1%;
 }
@@ -68,4 +70,31 @@ li.list-group-item {
 
 ul#game-info-list {
     margin-right: 6%;
+}
+
+div#description {
+    /*margin-left: 30.6%;*/
+    /*margin-right: 25%;*/
+}
+
+ul.genre-list {
+    margin-top: -42%;
+    margin-left: -2.7%;
+}
+
+li.genre-item {
+    padding: 2.5%;
+}
+
+p.genre-item {
+    margin-bottom: 0;
+}
+
+ul.language-list {
+    max-height: 200px;
+}
+
+div#language-scroll {
+    margin-left: -2.5%;
+    margin-top: 5%;
 }

@@ -7,23 +7,23 @@
     <div class="container">
         <div class="row">
             <div class="col-sm col-sm-4">
-                    <ul class="list-group time-info-list" id="game-info-list">
-                        <li class="list-group-item">
-                            {{ game.type | capfirst }}: {{ game.game_name }}
-                        </li>
-                        <li class="list-group-item">
-                            Price: {{ game | render_price }}
-                        </li>
-                        <li class="list-group-item">
-                            Release date: {{ game.release_date }}
-                        </li>
-                        <li class="list-group-item">
-                            Recommendations: {{ game.recommendations }}
-                        </li>
-                        <li class="list-group-item">
-                            <a href="{{ game.metacritic_url }}">Metacritic_score:</a>{{ game.metacritic_score }}
-                        </li>
-                    </ul>
+                <ul class="list-group time-info-list" id="game-info-list">
+                    <li class="list-group-item">
+                        {{ game.type | capfirst }}: {{ game.game_name }}
+                    </li>
+                    <li class="list-group-item">
+                        Price: {{ game | render_price }}
+                    </li>
+                    <li class="list-group-item">
+                        Release date: {{ game.release_date }}
+                    </li>
+                    <li class="list-group-item">
+                        Recommendations: {{ game.recommendations }}
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{{ game.metacritic_url }}">Metacritic_score:</a>{{ game.metacritic_score }}
+                    </li>
+                </ul>
             </div>
             <div class="col-sm col-sm-4">
                 <div id="cover">
@@ -31,27 +31,49 @@
                 </div>
             </div>
             <div class="col-sm col-sm-4">
-                    <ul class="list-group time-info-list">
-                        {% for time_info in game.time_information %}
-                            <li class="list-group-item time-info-item">{{ time_info.description }}: {{ time_info.content }}</li>
-                        {% endfor %}
-                    </ul>
+                <ul class="list-group time-info-list">
+                    {% for time_info in game.time_information %}
+                        <li class="list-group-item time-info-item">{{ time_info.description }}: {{ time_info.content }}</li>
+                    {% endfor %}
+                </ul>
             </div>
         </div>
 
 
+        <div class="row">
+            <div class="col-sm col-sm-9">
+                <div class="border border-dark" id="description">
+                    <p id="description" class="text-center">{{ game.short_description }}<br>Genres:
+                        {% for genre in game.genres %}
+                            {{ genre }}{% if not forloop.last %},{% else %}.{% endif %}
+                        {% endfor %}
+
+                    </p>
+                </div>
+            </div>
+            <div class="col-sm col-sm-3">
+                <ul class="list-group genre-list">
+                    {% for platform in game.platforms %}
+                        <li class="list-group-item genre-item">
+                            <p class="text-center genre-item">
+                                {{ platform.platform | capfirst }}
+                                {% if platform.supported %}
+                                    <i class="fas fa-check"></i>
+                                {% else %}
+                                    <i class="fas fa-times"></i>
+                                {% endif %}
+                            </p>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <div class="overflow-auto" id="language-scroll">
+                    <ul class="list-group language-list">
+                        {{ game.supported_languages | render_languages }}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-
-
-    <p>{{ game.short_description }}</p>
-
-
-{#type: game_name#}
-{#price#}
-{#date#}
-{#recomendations#}
-{#metacritc#}
-
-{{ game }}
 </div>

@@ -17,4 +17,17 @@ def render_price(value):
             return mark_safe(text)
 
 
+def render_languages(value):
+    languages = value.split(',')
+    text = ''
+    fa_audio = ' <i class="fas fa-volume-up"></i>'
+    for language in languages:
+        text += f'<li class="list-group-item language-item"><p class="text-center language-item">' \
+                f'{language.capitalize().replace("<strong>*</strong>", fa_audio)}' \
+                f'</p></li>'
+
+    return mark_safe(text)
+
+
 register.filter('render_price', render_price)
+register.filter('render_languages', render_languages)
