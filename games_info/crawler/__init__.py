@@ -14,8 +14,8 @@
 
 
 accepted_currency = {
-    'us': {'language': 'english', 'name': 'U.S.Dollar'},
     'br': {'language': 'brazilian', 'name': 'Brazilian Real'},
+    'us': {'language': 'english', 'name': 'U.S.Dollar'},
     'uk': {'language': 'english', 'name': 'British Pound'},
     'ar': {'language': 'spanish', 'name': 'Argentine Peso'},
 }
