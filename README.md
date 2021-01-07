@@ -1,48 +1,64 @@
 # Games info
-## This project receive a game name and return informations about this game 
+## This project get some data about a searched game with crawler
 
-The price datas are getting from [steamDB](https://steamdb.info/)
 
-The time datas are getting from [howlongtobeat](https://howlongtobeat.com/)
+The price data are getting from [steam api](http://store.steampowered.com/api/)
+
+The time data are getting from [howlongtobeat](https://howlongtobeat.com/)
+
+The app_ids data are getting from [steam api app list](http://api.steampowered.com/ISteamApps/GetAppList/v0001) 
 
 ## Usage
 
-Basically make a post to /games-info/ with this parameters:
+---
+### Searching for games:
+- Type a game to be searched
 
-```
+![search](./doc/img/search.png)
+
+This will make a get to **/api/app_ids** api passing the searched string in q parameter.
+
+The api will return a list of app_ids that will be used in /api/game in steam crawler part.
+
+---
+
+### Getting the search result:
+- When you click in a game in the above select 
+
+![result](./doc/img/result.png)
+
+This will make a post to **/api/game** api passing the app_id and the language/currency, just like it:
+
+```json
 {
-    'searched_game': 'the witcher 3',
-    // optinal parameter
-    'currency': 'us'
-    // see below about currency parameter
+  "app_id": "292030",
+  "currency": "br"
 }
 ```
-Currency parameter: 
-```
-[
-    'us', 'eu', 'ar', 'au', 'br', 'uk', 'ca', 'cl', 'cn', 'az', 'co', 'cr',
-    'hk', 'in', 'id', 'il', 'jp', 'kz', 'kw', 'my', 'mx', 'nz', 'no', 'pe',
-    'ph', 'pl', 'qa', 'ru', 'sa', 'sg', 'za', 'pk', 'kr', 'ch', 'tw', 'th',
-    'tr', 'ae', 'ua', 'uy', 'vn'
-]
-// if passed an incorrect currency, the currency will be us
-```
 
+The api will a json with data about this game, just like it:
 
-The return will be a json with informations about this game:
-```
+```json
 {
-    "pk": 1,
-    "created_at": "2020-03-26T00:40:41.071605Z",
-    "updated_at": "2020-04-06T01:43:15.017910Z",
-    "searched_game": "the witcher 3",
-    "game_name": "The Witcher 3: Wild Hunt",
-    "best_price": "R$ 23,99",
-    "current_price": "R$ 23,99 at -70%",
+    "id": 2,
+    "app_id": 292030,
+    "type": "game",
+    "game_name": "The Witcher® 3: Wild Hunt",
+    "short_description": "As war rages on throughout the Northern Realms, you take on the greatest contract of your life — tracking down the Child of Prophecy, a living weapon that can alter the shape of the world.",
+    "supported_languages": "English<strong>*</strong>, French<strong>*</strong>, Italian, German<strong>*</strong>, Spanish - Spain, Arabic, Czech, Hungarian, Japanese<strong>*</strong>, Korean, Polish<strong>*</strong>, Portuguese - Brazil<strong>*</strong>, Russian<strong>*</strong>, Traditional Chinese, Turkish, Simplified Chinese<br><strong>*</strong>languages with full audio support",
+    "metacritic_score": 93.0,
+    "metacritic_url": "https://www.metacritic.com/game/pc/the-witcher-3-wild-hunt?ftag=MCD-06-10aaa1f",
+    "recommendations": 422617,
+    "comming_soon": false,
+    "release_date": "May 18, 2015",
+    "is_free": false,
+    "discount_percent": 70.0,
+    "initial_formatted": "$39.99",
+    "final_formatted": "$11.99",
     "time_information": [
         {
             "description": "Main Story",
-            "content": "51 Hours"
+            "content": "51 Hours 30 Mins"
         },
         {
             "description": "Main + Extra",
@@ -52,10 +68,34 @@ The return will be a json with informations about this game:
             "description": "Completionist",
             "content": "173 Hours"
         }
+    ],
+    "header_image": "https://steamcdn-a.akamaihd.net/steam/apps/292030/header.jpg?t=1607418742",
+    "background_image": "https://steamcdn-a.akamaihd.net/steam/apps/292030/ss_107600c1337accc09104f7a8aa7f275f23cad096.1920x1080.jpg?t=1607418742",
+    "platforms": [
+        {
+            "platform": "windows",
+            "supported": true
+        },
+        {
+            "platform": "mac",
+            "supported": false
+        },
+        {
+            "platform": "linux",
+            "supported": false
+        }
+    ],
+    "genres": [
+        "RPG"
     ]
 }
 ```
 
-If this game is already searched before a new data will not be created,
+## Setup
 
-the data registred with the same game_name(data returned from steamdb) will be overwritten
+- create a .env file in the project root path
+  - add SECRET_KEY=your_secret_key_here
+  - add DEBUG=True or False 
+- install requiremets with pip install -r requirements.txt
+- run migrations with python manage.py migrate
+- run the server with python manage.py runserver
