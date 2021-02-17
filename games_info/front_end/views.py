@@ -21,4 +21,5 @@ class ResultDetail(DetailView):
     def get_context_data(self, *args, **kwargs):
         context = super(ResultDetail, self).get_context_data(*args, **kwargs)
         context['game'] = context['object'].as_dict()
+        context['game_url'] = f"https://store.steampowered.com/app/{context['game']['app_id']}"
         return context
