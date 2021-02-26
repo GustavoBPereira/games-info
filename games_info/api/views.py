@@ -3,6 +3,7 @@ import os
 from datetime import timedelta
 
 import pytz
+from decouple import config
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse, HttpResponseNotAllowed, HttpResponseBadRequest
@@ -23,7 +24,9 @@ class GameInfo(View):
             raise ValidationError(message='Parameter searched_game not found or empty')
 
         game = Game.objects.existing_game_object(app_id, accepted_currency[currency]['code'])
-        if game and game.updated_at > pytz.utc.localize(datetime.today()) - timedelta(hours=settings.CACHE_HOURS):
+        cached_crawler = config('CACHED_CRAWLER', default=True, cast=bool)
+        if cached_crawler and game and\
+                game.updated_at > pytz.utc.localize(datetime.today()) - timedelta(hours=settings.CACHE_HOURS):
             return JsonResponse(game.as_dict(), safe=False, status=200)
 
         crawler = GameCrawler(app_id, currency=currency)
