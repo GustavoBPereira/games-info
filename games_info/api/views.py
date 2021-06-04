@@ -39,12 +39,14 @@ class GameInfo(View):
         return JsonResponse(data, safe=False)
 
 
-def app_ids(request):
-    if request.method == 'GET':
-        try:
-            query = request.GET['q']
-        except KeyError:
-            return HttpResponseBadRequest('q param is required')
+class AppIds(View):
+
+    def get(self, *args, **kwargs):
+        query = self.request.GET.get('q', None)
+        if query is None:
+            error_data = {'error': True, 'message': 'Required parameter q not found or empty'}
+            return JsonResponse(status=422, data=error_data)
+
         with open(f'{os.path.dirname(os.path.dirname(os.path.abspath(__file__)))}/crawler/app_ids.json', 'r',
                   encoding='utf-8') as f:
             games_ids = json.load(f)
@@ -54,5 +56,3 @@ def app_ids(request):
                     matches.append(game)
             sorted_matches = sorted(matches, key=lambda k: len(k['name']))
         return JsonResponse({'games': sorted_matches[0:15]})
-    else:
-        return HttpResponseNotAllowed()
