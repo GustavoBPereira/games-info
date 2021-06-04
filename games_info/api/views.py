@@ -5,7 +5,7 @@ from django.http import JsonResponse, HttpResponseNotAllowed, HttpResponseBadReq
 from django.views.generic.base import View
 
 from games_info.api.caching_manager import check_cached_response, cached_response
-from games_info.api.models import Game, Platform, Genre, TimeData
+from games_info.api.models import Game
 from games_info.crawler import accepted_currency
 from games_info.crawler.main import GameCrawler
 
@@ -24,45 +24,15 @@ class GameInfo(View):
             return cached_response(game)
 
         crawler = GameCrawler(app_id, currency=currency)
-        game_datas = crawler.get_data()
-
-        steam_data = game_datas['steamdb']
+        game_data = crawler.get_data()
 
         try:
-            game = Game.objects.get(app_id=app_id, currency=steam_data['price_overview']['currency'])
+            game = Game.objects.get(app_id=app_id, currency=game_data['steamdb']['price_overview']['currency'])
             game.save()
             status_code = 200
-
         except Game.DoesNotExist:
+            game = Game.create_from_crawl_data(app_id=app_id, crawler_data=game_data)
             status_code = 201
-            game = Game.objects.create(
-                app_id=app_id,
-                type=steam_data['type'],
-                currency=steam_data['price_overview']['currency'],
-                game_name=steam_data['game_name'],
-                short_description=steam_data['short_description'],
-                supported_languages=steam_data['supported_languages'],
-                metacritic_score=steam_data['metacritic'].get('score'),
-                metacritic_url=steam_data['metacritic'].get('url'),
-                recommendations=steam_data['recommendations'],
-                coming_soon=steam_data['release_date']['coming_soon'],
-                release_date=steam_data['release_date']['date'],
-                is_free=steam_data['is_free'],
-                discount_percent=steam_data['price_overview']['discount_percent'],
-                initial_formatted=steam_data['price_overview']['initial_formatted'],
-                final_formatted=steam_data['price_overview']['final_formatted'],
-                header_image=steam_data['header_image'],
-                background_image=steam_data['background_image'],
-            )
-            for time_data in game_datas['how_long']:
-                TimeData.objects.create(game=game, description=time_data[0], content=time_data[1])
-
-            for platform in steam_data['platforms'].items():
-                Platform.objects.create(game=game, platform=platform[0], supported=platform[1])
-
-            for genre in steam_data['genres']:
-                Genre.objects.create(game=game, name=genre['description'])
-
         return JsonResponse(game.as_dict(), safe=False, status=status_code)
 
     def get(self, *args, **kwargs):
