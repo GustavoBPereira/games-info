@@ -19,21 +19,19 @@ class GameInfo(View):
             error_data = {'error': True, 'message': 'Required parameter app_id not found or empty'}
             return JsonResponse(status=422, data=error_data)
 
-        game = Game.objects.existing_game_object(app_id, accepted_currency[currency]['code'])
-        if check_cached_response(game):
-            return cached_response(game)
+        game_obj = Game.objects.existing_game_object(app_id, accepted_currency[currency]['code'])
+        if check_cached_response(game_obj):
+            return cached_response(game_obj)
 
         crawler = GameCrawler(app_id, currency=currency)
         game_data = crawler.get_data()
 
-        try:
-            game = Game.objects.get(app_id=app_id, currency=game_data['steamdb']['price_overview']['currency'])
-            game.save()
-            status_code = 200
-        except Game.DoesNotExist:
-            game = Game.create_from_crawl_data(app_id=app_id, crawler_data=game_data)
+        if not game_obj:
+            game_obj = Game.create_from_crawl_data(app_id=app_id, crawler_data=game_data)
             status_code = 201
-        return JsonResponse(game.as_dict(), safe=False, status=status_code)
+        else:
+            status_code = 200
+        return JsonResponse(game_obj.as_dict(), safe=False, status=status_code)
 
     def get(self, *args, **kwargs):
         registered_games = Game.objects.all()
