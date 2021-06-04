@@ -1,15 +1,11 @@
 import json
 import os
-from datetime import timedelta
 
-import pytz
-from decouple import config
-from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse, HttpResponseNotAllowed, HttpResponseBadRequest
-from django.utils.datetime_safe import datetime
 from django.views.generic.base import View
 
+from games_info.api.caching_manager import check_cached_response, cached_response
 from games_info.api.models import Game, Platform, Genre, TimeData
 from games_info.crawler import accepted_currency
 from games_info.crawler.main import GameCrawler
@@ -20,14 +16,12 @@ class GameInfo(View):
     def post(self, *args, **kwargs):
         app_id = self.request.POST.get('app_id', None)
         currency = self.request.POST.get('currency', 'us')
-        if app_id is None or app_id == '':
+        if app_id is None:
             raise ValidationError(message='Parameter searched_game not found or empty')
 
         game = Game.objects.existing_game_object(app_id, accepted_currency[currency]['code'])
-        cached_crawler = config('CACHED_CRAWLER', default=True, cast=bool)
-        if cached_crawler and game and\
-                game.updated_at > pytz.utc.localize(datetime.today()) - timedelta(hours=settings.CACHE_HOURS):
-            return JsonResponse(game.as_dict(), safe=False, status=200)
+        if check_cached_response(game):
+            return cached_response(game)
 
         crawler = GameCrawler(app_id, currency=currency)
         game_datas = crawler.get_data()
