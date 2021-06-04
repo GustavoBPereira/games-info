@@ -1,7 +1,6 @@
 import json
 import os
 
-from django.core.exceptions import ValidationError
 from django.http import JsonResponse, HttpResponseNotAllowed, HttpResponseBadRequest
 from django.views.generic.base import View
 
@@ -17,7 +16,8 @@ class GameInfo(View):
         app_id = self.request.POST.get('app_id', None)
         currency = self.request.POST.get('currency', 'us')
         if app_id is None:
-            raise ValidationError(message='Parameter searched_game not found or empty')
+            error_data = {'error': True, 'message': 'Required parameter app_id not found or empty'}
+            return JsonResponse(status=422, data=error_data)
 
         game = Game.objects.existing_game_object(app_id, accepted_currency[currency]['code'])
         if check_cached_response(game):
