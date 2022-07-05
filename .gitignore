@@ -8,3 +8,5 @@ staticfiles
 ghostdriver.log
 migrations/
 app_ids.json
+django-db
+static
