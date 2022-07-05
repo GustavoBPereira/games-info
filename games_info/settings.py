@@ -60,6 +60,9 @@ DATABASES = {
         'PASSWORD': config('DB_PASSWORD'),
         'HOST': 'db',
         'PORT': '3306',
+        'TEST': {
+            'NAME': 'test_games-info'
+        }
     }
 }
 
