@@ -18,7 +18,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'games_info.api',
-    'games_info.front_end'
+    'games_info.front_end',
+    'games_info.crawler'
 ]
 
 MIDDLEWARE = [
@@ -60,6 +61,9 @@ DATABASES = {
         'PASSWORD': config('DB_PASSWORD'),
         'HOST': 'db',
         'PORT': '3306',
+        "OPTIONS": {
+            'charset': 'utf8mb4'
+        }
     }
 }
 
