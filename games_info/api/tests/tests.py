@@ -44,10 +44,8 @@ class HomeTest(TestCase):
         self.assertEqual(req.json()['type'], 'dlc')
 
     def test_app_ids_finding_game_id(self):
-        # req = self.client.get("/api/app_ids/?q=Hellblade: Senua's Sacrifice")
-        # todo: learn mocks!
-        mocked_response = [{'name': 'foo', 'appid': 414340}]
-        self.assertIn(414340, [app['appid'] for app in mocked_response])
+        req = self.client.get("/api/app_ids/?q=Hellblade: Senua's Sacrifice")
+        self.assertIn(414340, [app['appid'] for app in req.json()['games']])
 
     def test_empty_search_when_type_soundtrack(self):
         req = self.client.get("/api/app_ids/?q=soundtrack")
