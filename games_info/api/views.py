@@ -1,13 +1,12 @@
-import json
-import os
-
-from django.http import JsonResponse, HttpResponseNotAllowed, HttpResponseBadRequest
+from django.db.models.functions import Length
+from django.http import JsonResponse
 from django.views.generic.base import View
 
 from games_info.api.caching_manager import check_cached_response, cached_response
 from games_info.api.models import Game
 from games_info.crawler import accepted_currency
-from games_info.crawler.main import GameCrawler
+from games_info.crawler.models import SteamApp
+from games_info.crawler.utils import Crawler
 
 
 class GameInfo(View):
@@ -23,7 +22,7 @@ class GameInfo(View):
         if check_cached_response(game_obj):
             return cached_response(game_obj)
 
-        crawler = GameCrawler(app_id, currency=currency)
+        crawler = Crawler(app_id, currency=currency)
         game_data = crawler.get_data()
 
         if not game_obj:
@@ -46,13 +45,4 @@ class AppIds(View):
         if query is None:
             error_data = {'error': True, 'message': 'Required parameter q not found or empty'}
             return JsonResponse(status=422, data=error_data)
-
-        with open(f'{os.path.dirname(os.path.dirname(os.path.abspath(__file__)))}/crawler/app_ids.json', 'r',
-                  encoding='utf-8') as f:
-            games_ids = json.load(f)
-            matches = []
-            for game in games_ids['applist']['apps']['app']:
-                if query.lower() in game['name'].lower() and 'soundtrack' not in game['name'].lower():
-                    matches.append(game)
-            sorted_matches = sorted(matches, key=lambda k: len(k['name']))
-        return JsonResponse({'games': sorted_matches[0:15]})
+        return JsonResponse({'games': [{'name':app.name, 'appid':app.app_id} for app in SteamApp.objects.filter(name__icontains=query).order_by(Length('name'))]})
