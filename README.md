@@ -1,16 +1,16 @@
 # Games info
 
-### Search a game or dlc and receive some nerd informations about it.
+Search a game or dlc and receive some nerd informations about it.
 
 ---
 
 ## Usage
 
-#### Do your search
+Do your search
 
 ![search](./doc/img/search.png)
 
-#### The result will brings something like:
+The result will brings something like:
 
 ![result](./doc/img/result.png)
 
