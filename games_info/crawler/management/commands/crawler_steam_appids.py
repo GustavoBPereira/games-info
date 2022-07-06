@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 from django.db import IntegrityError
 
 from games_info.crawler.models import SteamApp
-from games_info.crawler.wrappers.steam_appids import get_app_ids
+from games_info.crawler.utils import get_app_ids
 
 
 class Command(BaseCommand):
