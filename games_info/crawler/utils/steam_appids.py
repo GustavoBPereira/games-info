@@ -1,6 +1,6 @@
 import requests
 
-from games_info.crawler.utils import headers
+from games_info.crawler import headers
 
 url = 'http://api.steampowered.com/ISteamApps/GetAppList/v0001/'
 
