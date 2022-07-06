@@ -45,4 +45,5 @@ class AppIds(View):
         if query is None:
             error_data = {'error': True, 'message': 'Required parameter q not found or empty'}
             return JsonResponse(status=422, data=error_data)
-        return JsonResponse({'games': [{'name':app.name, 'appid':app.app_id} for app in SteamApp.objects.filter(name__icontains=query).order_by(Length('name'))]})
+        qs = SteamApp.objects.filter(name__icontains=query).order_by(Length('name'))
+        return JsonResponse({'games': [{'name':app.name, 'appid':app.app_id} for app in qs]})
