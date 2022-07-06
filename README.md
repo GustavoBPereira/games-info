@@ -37,9 +37,11 @@ docker-compose up
 ```
 Go in the web container and run:
 ```
+python manage.py makemigrations
+python manage.py migrate
 python manage.py crawler_setup
 ```
-To insert gris and outer wilds in the database, so you can use to develop.
+_crawler_setup_ To insert gris and outer wilds in the database, so you can use to develop.
 
 If you want the full database with more than 146000 items.\
 Go in the web container and run:
