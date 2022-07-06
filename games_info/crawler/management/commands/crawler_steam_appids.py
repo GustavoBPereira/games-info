@@ -6,7 +6,7 @@ from games_info.crawler.utils import get_app_ids
 
 
 class Command(BaseCommand):
-    help = 'Closes the specified poll for voting'
+    help = 'Put in the database all steam apps'
 
     def handle(self, *args, **options):
         print(' Running crawler_steam_appids...')
