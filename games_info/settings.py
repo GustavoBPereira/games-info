@@ -53,20 +53,25 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'games_info.wsgi.application'
 
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': 'db',
-        'PORT': '3306',
-        "OPTIONS": {
-            'charset': 'utf8mb4'
+if not config('HEROKU_PROD', default=False, cast=bool):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': config('DB_NAME'),
+            'USER': config('DB_USER'),
+            'PASSWORD': config('DB_PASSWORD'),
+            'HOST': 'db',
+            'PORT': '3306',
+            "OPTIONS": {
+                'charset': 'utf8mb4'
+            }
         }
     }
-}
+else:
+    from dj_database_url import parse
+    DATABASES = {
+        'default': config('DATABASE_URL', cast=parse)
+    }
 
 
 AUTH_PASSWORD_VALIDATORS = [
