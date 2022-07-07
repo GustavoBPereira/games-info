@@ -1,6 +1,7 @@
 import os
 
 from decouple import config
+import django_heroku
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -95,5 +96,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+
+django_heroku.settings(locals())
 
 CACHE_HOURS = 24
