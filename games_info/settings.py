@@ -68,10 +68,18 @@ if not config('HEROKU_PROD', default=False, cast=bool):
         }
     }
 else:
-    from dj_database_url import parse
-    DATABASES = {
-        'default': config('DATABASE_URL', cast=parse)
-    }
+    if config('DATABASE_URL', default=False):
+        from dj_database_url import parse
+        DATABASES = {
+            'default': config('DATABASE_URL', cast=parse)
+        }
+    else:
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            }
+        }
 
 
 AUTH_PASSWORD_VALIDATORS = [
