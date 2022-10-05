@@ -30,7 +30,7 @@ class Crawler(Parser):
             't': 'games',
             'sorthead': 'popular',
         })
-        req.raise_for_status()
+        # req.raise_for_status()
         return self.how_long_data(req)
 
     def get_data(self):
