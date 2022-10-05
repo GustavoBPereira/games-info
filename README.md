@@ -58,6 +58,11 @@ Just call in the web container:
 python manage.py test
 ```
 
+
+## TODO's
+
+- [ ] How Long To beat crawler fix.
+
 ---
 
 I'm building this project for fun on my free time :)
